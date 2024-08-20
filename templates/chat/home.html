@@ -1,0 +1,250 @@
+{% extends 'chat/main.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<style>
+   /* General styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header styles */
+.username-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.username-container h3 {
+  margin: 0;
+  font-size: 28px;
+  color: #333;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 25px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-success {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* Chat container styles */
+.chats-container {
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.chat-card {
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chat-name {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 25px;
+  color: #fff;
+  background-color: #4caf50;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.chat-name:hover {
+  transform: scale(1.05);
+}
+
+/* Chat search form styles */
+.chat-search-form {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.chat-search-form input[type="search"] {
+  flex-grow: 1;
+  padding: 12px;
+  border: 2px solid #4caf50;
+  border-radius: 25px;
+  font-size: 16px;
+}
+
+.chat-search-form button {
+  padding: 12px 24px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.chat-search-form button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .username-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .chat-search-form {
+    flex-direction: column;
+  }
+
+  .chat-search-form input[type="search"] {
+    margin-bottom: 10px;
+  }
+}
+
+</style>
+    <div class="container">
+        <div class="container">
+            <div class="chats-container container">
+                <div class="username-container">
+                    <h3>@{{user.username}}</h3>
+
+                    <a href="{% url 'new_chat' 0 %}" class="btn btn-success"><i class="fa-regular fa-message"></i></a>
+                </div>
+              
+                <h4 style="text-align: center; margin-bottom: 20px; font-weight: bolder ;">Chats</h4>
+
+                <form class="chat-search-form" role="search" action="{% url 'login' %}" method="GET">
+                    <input class="form-control me-2" name="q" type="search" placeholder="Search In Inbox" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+
+                {% for chat in chats %}
+                <div class="chat-card">
+                    <div class="card-body">
+                        {% if chat.user1 == request.user %}
+                        <a class="chat-name btn btn-outline-dark" href="{% url 'chat' chat.id %}">@{{chat.user2.username}}</a>
+                        {% else %}
+                        <a class="chat-name btn btn-outline-dark" href="{% url 'chat' chat.id %}">@{{chat.user1.username}}</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <br>
+                {% endfor %}
+        </div>
+    </div>
+
+
+        
+           
+
+             
+        
+            <!-- JavaScript for audio recording and form submission -->
+            <script>
+                let mediaRecorder;
+                let audioChunks = [];
+        
+                function startRecording(button) {
+                    navigator.mediaDevices.getUserMedia({ audio: true })
+                        .then(stream => {
+                            mediaRecorder = new MediaRecorder(stream);
+                            mediaRecorder.start();
+                            mediaRecorder.addEventListener("dataavailable", event => {
+                                audioChunks.push(event.data);
+                            });
+                            button.disabled = true;
+                            document.getElementById("stop-btn").disabled = false;
+                        });
+                }
+        
+                function stopRecording(button) {
+                    mediaRecorder.stop();
+                    mediaRecorder.addEventListener("stop", () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        const audio = document.getElementById("audio-playback");
+                        audio.src = audioUrl;
+        
+                        const reader = new FileReader();
+                        reader.readAsDataURL(audioBlob);
+                        reader.onload = () => {
+                            // Store the audio data in the hidden input field
+                            document.getElementById('audio-data').value = reader.result;
+                        };
+        
+                        document.getElementById("record-btn").disabled = false;
+                        button.disabled = true;
+                        audioChunks = [];
+                    });
+                }
+            </script>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container">
+    <div class="container">
+        <br><br>
+        <h2>Login</h2>
+        <hr>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" required name="username">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+        <br>
+        <hr><br>
+        <h4>Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></h4>
+        <h4>Forgot Password? <a href="{% url 'password_reset' %}">Reset Password</a></h4>
+        <br>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}

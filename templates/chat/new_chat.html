@@ -1,0 +1,22 @@
+{% extends 'chat/main.html' %}
+
+{% block content %}
+<div class="container">
+    <br>
+    <h3>Start a new conversation.</h3>
+    <form class="d-flex" role="search" action="{% url 'new_chat' 0 %}" style="inline-size: 70%;" method="GET">
+        <input class="form-control me-2" name="q" type="search" placeholder="Type @username" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search User</button>
+    </form>
+    <div class="container">
+        {% if user %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">@{{user.username}}</h5>
+                    <a href="{% url 'new_chat' user.id %}" class="btn btn-primary">Start Chat</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

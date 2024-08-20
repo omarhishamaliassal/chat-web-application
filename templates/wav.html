@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Steganography</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #766868;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: #ffffff;
+        }
+        h2 {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-top: 1rem;
+        }
+        form {
+            margin-top: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        input[type="file"] {
+            display: block;
+            margin-bottom: 1rem;
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .download-link {
+            display: block;
+            margin-top: 1rem;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .download-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Audio Steganography</h1>
+        
+        <h2>Embed WAV</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="cover_wav">Cover WAV file:</label>
+            <input type="file" name="cover_wav" required><br>
+            
+            <label for="hidden_wav">Hidden WAV file:</label>
+            <input type="file" name="hidden_wav" required><br>
+            
+            <button type="submit" name="embed">Embed</button>
+        </form>
+        
+        {% if embedded %}
+            <h3>Embedded File</h3>
+            <a class="download-link" href="{{ embedded_url }}" download>Download embedded.wav</a>
+        {% endif %}
+        
+        <h2>Extract WAV</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="embedded_wav">Embedded WAV file:</label>
+            <input type="file" name="embedded_wav" required><br>
+            
+            <button type="submit" name="extract">Extract</button>
+        </form>
+        
+        {% if extracted %}
+            <h3>Extracted File</h3>
+            <a class="download-link" href="{{ extracted_url }}" download>Download extracted.wav</a>
+        {% endif %}
+    </div>
+</body>
+</html>

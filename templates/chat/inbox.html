@@ -1,0 +1,21 @@
+{% extends 'chat/main.html' %}
+
+{% block content %}
+
+<div class="container">
+    <br>
+    <h3>{{user.username}}'s Inbox:</h3>
+    <hr>
+    <div class="container">
+        {% for chat in chats %}
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <a href="">{{chat}}</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,35 @@
+{% extends 'chat/main.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="container">
+        <br><br>
+        <h2>Sign Up</h2>
+        <hr>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" name="username"
+                    aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">E-mail</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password1" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" name="password2" id="exampleInputPassword1">
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+        <br>
+        <hr><br>
+        <h4>Already have an account? <a href="{% url 'login' %}">Login</a></h4>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,67 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    rel="icon"
+    href="https://cdn-icons-png.flaticon.com/512/5962/5962463.png"
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Tektur:wght@600&display=swap"
+    rel="stylesheet"
+  />
+  <title>ChatSafe Demo</title>
+  <style>
+    body {
+      font-family: "Tektur", sans-serif;
+      background: rgb(2, 84, 166);
+      background: linear-gradient(
+        222deg,
+        rgba(2, 84, 166, 1) 0%,
+        rgba(255, 255, 255, 1) 100%
+      );
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    h1 {
+      text-transform: uppercase;
+      font-size: 0.55rem;
+      color: #fa0101;
+    }
+
+    p {
+      font-size: 0.35rem;
+      color: #fa0101;
+    }
+
+    .blob {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      fill: #0000005e;
+    }
+  </style>
+</head>
+<svg class="blob" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <path
+    stroke="#1976d25a"
+    stroke-width="2"
+    d="M41.6,-78C50.7,-66.7,52.6,-49.1,57.1,-35.1C61.5,-21,68.4,-10.5,73.6,3C78.7,16.5,82.1,32.9,77,45.7C71.8,58.5,58,67.6,43.8,70.4C29.5,73.2,14.8,69.9,0.1,69.6C-14.5,69.4,-29,72.3,-38.6,66.8C-48.3,61.4,-53.2,47.4,-61.6,34.9C-70,22.4,-81.8,11.2,-84.7,-1.7C-87.6,-14.5,-81.5,-29,-71.6,-38.9C-61.6,-48.7,-47.8,-53.8,-35.3,-63.1C-22.7,-72.4,-11.4,-85.8,2.4,-90C16.2,-94.2,32.5,-89.3,41.6,-78Z"
+    transform="translate(100 100)"
+  />
+  <foreignObject x="40" y="70" width="120" height="120">
+    <h1>Steganography Error!</h1>
+    <p>
+      Something went wrong during the steganography process. Please try again.
+    </p>
+  </foreignObject>
+</svg>
